@@ -81,6 +81,7 @@ import re
 import os.path
 import locale
 import string
+import json
 
 try:
     from ConfigParser import SafeConfigParser
@@ -302,6 +303,10 @@ class AnsiSearchFormatter(object):
             ansiFormatter.cmdColour(colour), result['from_user'],
             ansiFormatter.cmdReset(), result['text']))
 
+class JSONSearchFormatter(object):
+    def __call__(self, result, options):
+        return("\n%s" % (json.dumps(result)))
+
 _term_encoding = None
 def get_term_encoding():
     global _term_encoding
@@ -334,7 +339,8 @@ search_formatters = {
     'default': SearchFormatter,
     'verbose': VerboseSearchFormatter,
     'urls': URLSearchFormatter,
-    'ansi': AnsiSearchFormatter
+    'ansi': AnsiSearchFormatter,
+    'json': JSONSearchFormatter
 }
 formatters['search'] = search_formatters
 
